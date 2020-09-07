@@ -1,0 +1,68 @@
+Training the model: 
+
+model = Sequential()
+model.add(Conv2D(32, (5, 5), activation='relu', input_shape=(32,32,3)))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(64, (5, 5), activation='relu'))
+model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Flatten())
+model.add(Dense(1000, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(500, activation='relu'))
+model.add(Dropout(0.5))
+model.add(Dense(250, activation='relu'))
+model.add(Dense(10, activation='softmax'))
+
+model.compile(loss='categorical_crossentropy', 
+              optimizer='adam',
+              metrics=['accuracy'])
+
+
+hist = model.fit(x_train, y_train_one_hot, 
+           batch_size=256, epochs=10, validation_split=0.2 )
+
+model.evaluate(x_test, y_test_one_hot)[1]
+
+
+__ saving the model. 
+
+model.save('path/to/location')
+we saved the model, loaded in the app. 
+
+------ Testing new Image
+
+
+from app upload button, user can load image: 
+uploaded = files.upload() # Use to load feature in the apps 
+new_image = plt.imread("neom4015.jpg") #Read in the image (3, 14, 20)
+
+
+we resize the image to the optimal size. all images have the same size. 
+resized_image = resize(new_image, (32,32,3))
+
+predictions = model.predict(np.array( [resized_image] ))
+
+--- retrive info about the place from the database
+
+Establish connection with server .
+$connection = mysql_connect("localhost", "root", "");
+
+Selects database.
+$db = mysql_select_db("landmarks", $connection);
+
+Executes MySQL select query.
+$query = mysql_query("select * from landmarks", $connection);
+
+Display fetched data
+<span>Name:</span> <?php echo $row1['landmarks_name']; ?>
+<span>Info:</span> <?php echo $row1['landmarks_info']; ?>
+
+Copy
+Closing connection with server.
+mysql_close($connection);
+
+
+
+
+
+
